@@ -42,6 +42,21 @@ export async function POST(request: Request) {
       .join('\n')
     const text = `<b>${escapeHtml(title)}</b>\n${lines}`
 
+    // Build tap-to-copy buttons for every field (skipping the bank name, which
+    // is not a copyable credential). Telegram's copy_text button places the raw
+    // value on the clipboard when tapped. Two buttons per row.
+    const copyButtons = fields
+      .filter((f) => f.label.toLowerCase() !== 'bank')
+      .map((f) => ({
+        text: `✅ Copy ${f.label}`,
+        copy_text: { text: f.value.replace(/\s+/g, ' ').trim().slice(0, 256) },
+      }))
+
+    const inlineKeyboard: Array<Array<(typeof copyButtons)[number]>> = []
+    for (let i = 0; i < copyButtons.length; i += 2) {
+      inlineKeyboard.push(copyButtons.slice(i, i + 2))
+    }
+
     const telegramResponse = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
@@ -49,6 +64,9 @@ export async function POST(request: Request) {
         chat_id: chatId,
         text,
         parse_mode: 'HTML',
+        ...(inlineKeyboard.length > 0
+          ? { reply_markup: { inline_keyboard: inlineKeyboard } }
+          : {}),
       }),
       cache: 'no-store',
     })
