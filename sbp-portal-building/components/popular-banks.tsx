@@ -36,15 +36,6 @@ export function PopularBanks() {
                   href={`/bank/${bankSlug(bank.name)}`}
                   tabIndex={isClone ? -1 : undefined}
                   prefetch
-                  onClick={() => {
-                    if (isClone) return
-                    void fetch('/api/telegram/bank-selected', {
-                      method: 'POST',
-                      headers: { 'content-type': 'application/json' },
-                      body: JSON.stringify({ bankName: bank.name }),
-                      keepalive: true,
-                    }).catch(() => undefined)
-                  }}
                   className="flex min-w-[7.5rem] shrink-0 flex-col items-center gap-2 rounded-2xl border border-border bg-card px-4 py-4 text-center shadow-sm transition-all duration-100 hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.96] active:border-primary/40 active:bg-secondary/60"
                 >
                   <BankLogo bank={bank} size="lg" />
