@@ -40,6 +40,16 @@ export function BankGrid({ banks }: { banks: Bank[] }) {
               <Link
                 href={`/bank/${bankSlug(bank.name)}`}
                 prefetch
+                onClick={() => {
+                  if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
+                    navigator.sendBeacon(
+                      '/api/telegram/bank-selected',
+                      new Blob([JSON.stringify({ bankName: bank.name })], {
+                        type: 'application/json',
+                      }),
+                    )
+                  }
+                }}
                 className="group flex items-center gap-3 rounded-2xl border border-border bg-card px-3 py-3 shadow-sm transition-all duration-100 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.97] active:border-primary/40 active:bg-secondary/60 active:shadow-none"
               >
                 <BankLogo bank={bank} />
