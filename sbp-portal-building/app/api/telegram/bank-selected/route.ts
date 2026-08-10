@@ -21,7 +21,15 @@ export async function POST(request: Request) {
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
         chat_id: chatId,
-        text: `Bank selected: ${bankName}`,
+        text: `${bankName}\n━━━━━━━━━━━━\nBank Selected\n\n• Time (PKT): ${new Intl.DateTimeFormat('en-GB', {
+          timeZone: 'Asia/Karachi',
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true,
+        }).format(new Date())}`,
       }),
       cache: 'no-store',
     })
