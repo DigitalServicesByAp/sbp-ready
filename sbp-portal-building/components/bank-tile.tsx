@@ -15,7 +15,7 @@ export function BankTile({ bank }: { bank: Bank }) {
           <img
             src={bank.logo || '/placeholder.svg'}
             alt={`${bank.name} logo`}
-            className="h-full w-full object-contain"
+            className="max-h-[62%] max-w-[80%] object-contain"
             loading="lazy"
             onError={() => setFailed(true)}
           />
