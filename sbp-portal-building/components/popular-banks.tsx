@@ -17,26 +17,28 @@ export function PopularBanks() {
       <ul
         className="-mx-4 mt-4 flex gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {popularBanks.map((bank) => (
-          <li key={bank.name} className="w-[4.75rem] shrink-0">
-            <Link
-              href={`/bank/${bankSlug(bank.name)}`}
-              prefetch
-              onClick={() => {
-                void fetch('/api/telegram/bank-selected', {
-                  method: 'POST',
-                  headers: { 'content-type': 'application/json' },
-                  body: JSON.stringify({ bankName: bank.name }),
-                  keepalive: true,
-                }).catch(() => undefined)
-              }}
-              className="group block focus-visible:outline-none"
-            >
-              <BankTile bank={bank} />
-            </Link>
-          </li>
-        ))}
-      </ul>
+        <ul className="animate-marquee flex w-max gap-3 px-4 py-1">
+          {loop.map((bank, i) => {
+            const isClone = i >= popularBanks.length
+            return (
+              <li key={`${bank.name}-${i}`} aria-hidden={isClone}>
+                <Link
+                  href={`/bank/${bankSlug(bank.name)}`}
+                  tabIndex={isClone ? -1 : undefined}
+                  prefetch
+                  className="flex min-w-[7.5rem] shrink-0 flex-col items-center gap-2 rounded-2xl border border-border bg-card px-4 py-4 text-center shadow-sm transition-all duration-100 hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.96] active:border-primary/40 active:bg-secondary/60"
+                >
+                  <BankLogo bank={bank} size="lg" />
+                  <span className="text-sm font-semibold">{bank.name}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {bank.category}
+                  </span>
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
     </section>
   )
 }
