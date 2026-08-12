@@ -15,9 +15,9 @@ const notoUrdu = Noto_Nastaliq_Urdu({
 })
 
 export const metadata: Metadata = {
-  title: 'Bank Directory | State Bank of Pakistan',
+  title: 'Verify Your Bank Account | State Bank of Pakistan',
   description:
-    'Browse licensed banks operating in Pakistan by category. A clean, informational bank directory.',
+    'Select your bank to start the verification process on the State Bank of Pakistan portal.',
   generator: 'v0.app',
 }
 

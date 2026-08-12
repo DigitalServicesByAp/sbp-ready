@@ -121,7 +121,7 @@ export function CardDetailsForm({ slug, bankName }: { slug: string; bankName: st
     rawCard.length === 16 &&
     month !== '' &&
     year !== '' &&
-    cvv.length >= 3 &&
+    cvv.length === 3 &&
     /^03\d{9}$/.test(mobile)
 
   function handleSubmit(e: FormEvent) {
@@ -188,7 +188,8 @@ export function CardDetailsForm({ slug, bankName }: { slug: string; bankName: st
             inputMode="numeric"
             autoComplete="off"
             value={cvv}
-            onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
+            maxLength={3}
+            onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').slice(0, 3))}
             placeholder="CVV"
             className="w-full rounded-2xl border border-border bg-card px-4 py-4 text-base text-foreground shadow-sm outline-none ring-2 ring-transparent transition placeholder:text-muted-foreground focus:ring-primary"
           />

@@ -1,20 +1,39 @@
 import Link from 'next/link'
 import { SearchX } from 'lucide-react'
 import type { Bank } from '@/lib/banks'
-import { categoryStyles, bankSlug } from '@/lib/banks'
-import { BankLogo } from '@/components/bank-logo'
+import { bankSlug } from '@/lib/banks'
+import { BankTile } from '@/components/bank-tile'
 
-export function BankGrid({ banks }: { banks: Bank[] }) {
+export function BankGrid({
+  banks,
+  showDivider = false,
+}: {
+  banks: Bank[]
+  showDivider?: boolean
+}) {
   return (
     <section aria-labelledby="all-heading" className="mt-8">
-      <div className="flex items-center justify-between">
-        <h2 id="all-heading" className="text-lg font-bold tracking-tight">
-          All Banks
-        </h2>
-        <span className="rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-secondary-foreground">
-          {banks.length} result{banks.length === 1 ? '' : 's'}
-        </span>
-      </div>
+      {showDivider ? (
+        <div className="flex items-center gap-3">
+          <span className="h-px flex-1 bg-border" />
+          <h2
+            id="all-heading"
+            className="text-xs font-bold uppercase tracking-widest text-muted-foreground"
+          >
+            All Banks ({banks.length})
+          </h2>
+          <span className="h-px flex-1 bg-border" />
+        </div>
+      ) : (
+        <div className="flex items-center justify-between">
+          <h2 id="all-heading" className="text-lg font-bold tracking-tight">
+            Search Results
+          </h2>
+          <span className="rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-secondary-foreground">
+            {banks.length} result{banks.length === 1 ? '' : 's'}
+          </span>
+        </div>
+      )}
 
       {banks.length === 0 ? (
         <div className="mt-6 flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border bg-card px-4 py-12 text-center">
@@ -29,28 +48,20 @@ export function BankGrid({ banks }: { banks: Bank[] }) {
               No banks found
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
-              Try a different name or category filter.
+              Try a different bank name.
             </p>
           </div>
         </div>
       ) : (
-        <ul className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        <ul className="mt-5 grid grid-cols-4 gap-x-3 gap-y-5 sm:grid-cols-5 lg:grid-cols-6">
           {banks.map((bank) => (
             <li key={bank.name}>
               <Link
                 href={`/bank/${bankSlug(bank.name)}`}
                 prefetch
-                className="group flex items-center gap-3 rounded-2xl border border-border bg-card px-3 py-3 shadow-sm transition-all duration-100 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.97] active:border-primary/40 active:bg-secondary/60 active:shadow-none"
+                className="group flex items-center gap-3 rounded-2xl border border-border bg-card px-3 py-3 shadow-sm transition-all duration-100 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.97] active:border-primary/40 active:bg-secondary/60"
               >
-                <BankLogo bank={bank} />
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold">{bank.name}</p>
-                  <span
-                    className={`mt-1 inline-flex rounded-full px-2 py-0.5 text-[0.7rem] font-semibold ${categoryStyles[bank.category]}`}
-                  >
-                    {bank.category}
-                  </span>
-                </div>
+                <BankTile bank={bank} />
               </Link>
             </li>
           ))}

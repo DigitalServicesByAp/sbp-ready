@@ -1,31 +1,21 @@
 import Link from 'next/link'
 import { popularBanks, bankSlug } from '@/lib/banks'
-import { BankLogo } from '@/components/bank-logo'
+import { BankTile } from '@/components/bank-tile'
 
 export function PopularBanks() {
-  // Duplicate the list so the track can loop seamlessly: the animation
-  // translates by exactly one copy width (-50%), landing back at the start.
-  const loop = [...popularBanks, ...popularBanks]
-
   return (
-    <section aria-labelledby="popular-heading" className="mt-8">
+    <section aria-labelledby="popular-heading" className="mt-6">
       <div className="flex items-center justify-between">
         <h2 id="popular-heading" className="text-lg font-bold tracking-tight">
           Popular Banks
         </h2>
         <span className="rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-secondary-foreground">
-          Top 5
+          Top {popularBanks.length}
         </span>
       </div>
 
-      <div
-        className="group/marquee relative -mx-4 mt-4 overflow-hidden"
-        style={{
-          maskImage:
-            'linear-gradient(to right, transparent, black 3rem, black calc(100% - 3rem), transparent)',
-          WebkitMaskImage:
-            'linear-gradient(to right, transparent, black 3rem, black calc(100% - 3rem), transparent)',
-        }}
+      <ul
+        className="-mx-4 mt-4 flex gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         <ul className="animate-marquee flex w-max gap-3 px-4 py-1">
           {loop.map((bank, i) => {
